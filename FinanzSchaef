@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wieviel Kredit kann ich mir leisten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Wieviel Kredit kann ich mir leisten</h2>
+
+    <label for="loanAmount">Kreditbetrag (in Euro):</label>
+    <input type="number" id="loanAmount" placeholder="Geben Sie den Kreditbetrag ein">
+
+    <label for="interestRate">Zinssatz (in Prozent):</label>
+    <input type="number" id="interestRate" placeholder="Geben Sie den Zinssatz ein">
+
+    <label for="loanTerm">Kreditlaufzeit (in Jahren):</label>
+    <input type="number" id="loanTerm" placeholder="Geben Sie die Kreditlaufzeit ein">
+
+    <button onclick="calculateLoan()">Berechnen</button>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateLoan() {
+            var loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            var interestRate = parseFloat(document.getElementById('interestRate').value);
+            var loanTerm = parseFloat(document.getElementById('loanTerm').value);
+
+            if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTerm)) {
+                alert('Bitte füllen Sie alle Felder mit gültigen Zahlen aus.');
+                return;
+            }
+
+            var monthlyInterestRate = interestRate / 100 / 12;
+            var numberOfPayments = loanTerm * 12;
+
+            var monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+            var totalPayment = monthlyPayment * numberOfPayments;
+            var totalInterest = totalPayment - loanAmount;
+
+            var resultText = "Monatliche Rate: " + monthlyPayment.toFixed(2) + " Euro<br>";
+            resultText += "Gesamtrückzahlung: " + totalPayment.toFixed(2) + " Euro<br>";
+            resultText += "Gesamtzinsen: " + totalInterest.toFixed(2) + " Euro";
+
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
+
+</body>
+</html>
+
